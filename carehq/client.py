@@ -75,10 +75,14 @@ class APIClient:
     ):
         """Call the API"""
 
-        if params:
+        # Filter out params/data set to `None` and ensure all arguments are
+        # converted to strings.
 
-            # Filter out parameters set to `None`
-            params = {k: v for k, v in params.items() if v is not None}
+        if params:
+            params = {k: str(v) for k, v in params.items() if v is not None}
+
+        if data:
+            data = {k: str(v) for k, v in data.items() if v is not None}
 
         # Build the signature
         signature_body = json.dumps(

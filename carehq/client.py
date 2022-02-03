@@ -79,10 +79,16 @@ class APIClient:
         # converted to strings.
 
         if params:
-            params = {k: str(v) for k, v in params.items() if v is not None}
+            params = {
+                k: _ensure_string(v)
+                for k, v in params.items() if v is not None
+            }
 
         if data:
-            data = {k: str(v) for k, v in data.items() if v is not None}
+            data = {
+                k: _ensure_string(v)
+                for k, v in data.items() if v is not None
+            }
 
         # Build the signature
         signature_body = json.dumps(
@@ -150,3 +156,15 @@ class APIClient:
         )
 
 
+# Utils
+
+def _ensure_string(v):
+    """
+    Ensure values that will be convered to a form-encoded value is a string
+    (or list of strings).
+    """
+
+    if isinstance(v, (list, tuple)):
+        return list([str(i) for i in v])
+
+    return str(v)

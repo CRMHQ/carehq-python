@@ -91,11 +91,18 @@ class APIClient:
             }
 
         # Build the signature
-        signature_body = json.dumps(
-            MultiDict(
-                params if method.lower() == 'get' else data
-            ).to_dict(False)
-        )
+        signature_data = MultiDict(params if method.lower() == 'get' else data)\
+            .to_dict(False)
+
+        signature_values = []
+        for key, value in signature_data.items():
+            signature_values.append(key)
+            if isinstance(value, list):
+                signature_values += value
+            else:
+                signature_values.append(value)
+        signature_body = ''.join(signature_values)
+        print(signature_body)
 
         timestamp = str(time.time())
         signature = hashlib.sha1()

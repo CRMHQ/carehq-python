@@ -102,7 +102,6 @@ class APIClient:
             else:
                 signature_values.append(value)
         signature_body = ''.join(signature_values)
-        print(signature_body)
 
         timestamp = str(time.time())
         signature = hashlib.sha1()

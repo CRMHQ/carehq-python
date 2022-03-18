@@ -30,7 +30,13 @@ api_client = carehq.APIClient(
 users = api_client(
     'get',
     'users',
-    {'filters-q': ['lyra']}
+    {
+        'attributes': [
+            'first_name',
+            'last_name'
+        ],
+        'filters-q': 'ant'
+    }
 )
 
 ```
